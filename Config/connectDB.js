@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
-const DB = "mongodb+srv://pavangowdats01:12345@cluster0.358fgjj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const DB = process.env.DB;
 
 const connectDB = async () => {
     try {

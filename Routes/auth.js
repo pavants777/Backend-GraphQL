@@ -1,18 +1,18 @@
 const express = require('express');
 const routes = express.Router();
 const emailValidation = require('../middlewares/emailValidator');
-const UserModel = require('../models/userModel');
+const UserModel = require('../Models/userSchema');
 const jwt = require('jsonwebtoken');
 const tokenMiddelWare = require('../middlewares/tokenMiddelwares');
 
 routes.post('/signUp',emailValidation,async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { userName, email, password } = req.body;
         const existingUser = await UserModel.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ error: "User with this email already exists" });
         }
-        const user = new UserModel({ name, email, password });
+        const user = new UserModel({ userName, email, password });
         await user.save(); 
         const secretKey = process.env.JWT_KEY || "PasswordKey";
         const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '30d' });
